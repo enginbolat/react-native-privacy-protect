@@ -1,18 +1,14 @@
-#import "PrivacyProtect.h"
+#import <React/RCTBridgeModule.h>
 
-@implementation PrivacyProtect
-RCT_EXPORT_MODULE()
+@interface RCT_EXTERN_MODULE(PrivacyProtect, NSObject)
+@end
 
-- (NSNumber *)multiply:(double)a b:(double)b {
-    NSNumber *result = @(a * b);
+@implementation PrivacyProtect (AutoLoad)
 
-    return result;
-}
-
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-    return std::make_shared<facebook::react::NativePrivacyProtectSpecJSI>(params);
++ (void)load {
+  // Swift sınıfını elle init et → böylece observer kaydolur
+  static PrivacyProtect *instance;
+  instance = [PrivacyProtect new];
 }
 
 @end

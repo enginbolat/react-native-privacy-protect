@@ -1,5 +1,5 @@
-#import <PrivacyProtectSpec/PrivacyProtectSpec.h>
+#import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
 
-@interface PrivacyProtect : NSObject <NativePrivacyProtectSpec>
-
+@interface PrivacyProtect : NSObject <RCTBridgeModule>
 @end

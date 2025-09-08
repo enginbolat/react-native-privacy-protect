@@ -1,5 +1,13 @@
-import PrivacyProtect from './NativePrivacyProtect';
+import { NativeModules } from 'react-native';
 
-export function multiply(a: number, b: number): number {
-  return PrivacyProtect.multiply(a, b);
+const { PrivacyProtect } = NativeModules;
+
+export function configurePrivacyProtect(options: {
+  blurStyle?: 'dark' | 'light' | 'extraLight',
+  overlayColor?: string,
+  animated?: boolean,
+  animationDuration?: number,
+  secureFlag?: boolean,
+}) {
+  PrivacyProtect.configure(options);
 }
