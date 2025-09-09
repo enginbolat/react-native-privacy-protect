@@ -12,6 +12,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 
 class MainApplication : Application(), ReactApplication {
 
+
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =

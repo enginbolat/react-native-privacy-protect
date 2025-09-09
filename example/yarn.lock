@@ -5720,11 +5720,11 @@ __metadata:
 
 "react-native-privacy-protect@file:../::locator=react-native-privacy-protect-example%40workspace%3A.":
   version: 0.1.0
-  resolution: "react-native-privacy-protect@file:../#../::hash=bf07e3&locator=react-native-privacy-protect-example%40workspace%3A."
+  resolution: "react-native-privacy-protect@file:../#../::hash=76a32e&locator=react-native-privacy-protect-example%40workspace%3A."
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 8f0dfa886693e929cf50ae81eb4bdc754e7ed99cd51aaf7fe5ac6faf24078fd46e3bb35cdcb4c1dfd24e1d72a0f20a6b70d2e9708320835c8a2def9e85460857
+  checksum: 53ba23350b986086771cd9afe259ac52b1aa7d496f174b2fade2a89f03a910934081e4253cf10cd2e87f3790e7bae1026e9230a9d650d688d9ab13938baf8b66
   languageName: node
   linkType: hard
 
