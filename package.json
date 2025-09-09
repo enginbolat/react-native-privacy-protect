@@ -70,7 +70,6 @@
     "@release-it/conventional-changelog": "^10.0.1",
     "@types/jest": "^29.5.14",
     "@types/react": "0.81.1",
-    "@types/react-native": "^0.73.0",
     "commitlint": "^19.8.1",
     "del-cli": "^6.0.0",
     "eslint": "^9.35.0",
@@ -89,8 +88,9 @@
     "react": "*",
     "react-native": "*"
   },
-  "workspaces": [
-    "example"
+"workspaces": [
+    "example",
+    "react-native-privacy-protect"
   ],
   "packageManager": "yarn@3.6.1",
   "jest": {
