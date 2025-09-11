@@ -31,6 +31,31 @@ declare module 'react-native-privacy-protect' {
      * Default: false
      */
     secureFlag?: boolean;
+
+    /**
+     * Android only: Blur radius for the privacy overlay.
+     * Only works on Android 12+ (API 31+).
+     * Default: 0 (no blur)
+     */
+    blurRadius?: number;
+
+    /**
+     * Android only: Enable automatic privacy protection when app goes to background.
+     * When true, the privacy overlay will automatically show when the app loses focus
+     * and hide when the app comes back to foreground.
+     * Default: false
+     */
+    autoEnable?: boolean;
+
+    /**
+     * Image source for custom privacy overlay.
+     * Can be either a URI string or an object with uri/resourceId.
+     */
+    image?: string;
+    imageSource?: {
+      uri?: string;
+      resourceId?: number;
+    };
   };
 
   /**

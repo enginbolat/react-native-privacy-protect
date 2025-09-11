@@ -10,12 +10,18 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => min_ios_version_supported }
+  s.platforms    = { :ios => "15.4" }
   s.source       = { :git => "https://github.com/enginbolat/react-native-privacy-protect.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,cpp,swift}"
-  s.private_header_files = "ios/**/*.h"
+  s.requires_arc = true
 
+  s.dependency "React-Core"
 
-  install_modules_dependencies(s)
+  # Install React Native dependencies
+  if respond_to?(:install_modules_dependencies, true)
+    install_modules_dependencies(s)
+  else
+    s.dependency "React-Core"
+  end
 end

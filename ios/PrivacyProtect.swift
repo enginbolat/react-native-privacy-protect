@@ -1,19 +1,24 @@
+import React
+import UIKit
+
 @objc(PrivacyProtect)
 class PrivacyProtect: NSObject {
   private static var blurView: UIVisualEffectView?
   private static var overlayView: UIView?
+  private static var imageView: UIImageView?
   private static var config: [String: Any] = [
     "blurStyle": "dark",
     "overlayColor": "#00000080",
     "animated": true,
-    "animationDuration": 300
+    "animationDuration": 300,
+    "backgroundImage": NSNull()
   ]
   
   @objc func configure(_ options: NSDictionary) {
     for (key, value) in options {
       PrivacyProtect.config[key as! String] = value
     }
-    
+
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(appWillResignActive),
@@ -36,19 +41,46 @@ class PrivacyProtect: NSObject {
     }
   }
   
-  @objc func appWillResignActive() {/Users/enginbolat/Desktop/react-native-privacy-protect/ios/PrivacyProtect.swift
+  private func resolveColor(_ value: Any?) -> UIColor? {
+    if let number = value as? NSNumber {
+      return RCTConvert.uiColor(number) // processColor’dan int
+    }
+    if let str = value as? String {
+      return UIColor(hex: str)
+    }
+    return nil
+  }
+  
+  @objc func appWillResignActive() {
     guard let window = UIApplication.shared.connectedScenes
       .compactMap({ $0 as? UIWindowScene })
       .flatMap({ $0.windows })
       .first(where: { $0.isKeyWindow }) else { return }
     
+    // Önce image varsa onu göster
+    if let imageUri = PrivacyProtect.config["backgroundImage"] as? String,
+       let url = URL(string: imageUri),
+       let data = try? Data(contentsOf: url),
+       let image = UIImage(data: data) {
+      
+      let imageView = UIImageView(image: image)
+      imageView.frame = window.bounds
+      imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      imageView.contentMode = .scaleAspectFill
+      PrivacyProtect.imageView = imageView
+      window.addSubview(imageView)
+      return
+    }
+    
+    // Blur
     let blur = UIBlurEffect(style: parseBlurStyle(PrivacyProtect.config["blurStyle"] as! String))
     let blurView = UIVisualEffectView(effect: blur)
     blurView.frame = window.bounds
     blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    PrivacyProtect.blurView = blurView
     
-    if let hex = PrivacyProtect.config["overlayColor"] as? String,
-       let color = UIColor(hex: hex) {
+    // Overlay
+    if let color = resolveColor(PrivacyProtect.config["overlayColor"]) {
       let overlay = UIView(frame: window.bounds)
       overlay.backgroundColor = color
       overlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -56,8 +88,7 @@ class PrivacyProtect: NSObject {
       PrivacyProtect.overlayView = overlay
     }
     
-    PrivacyProtect.blurView = blurView
-    
+    // Ekle + animasyon
     if (PrivacyProtect.config["animated"] as? Bool) == true {
       blurView.alpha = 0
       window.addSubview(blurView)
@@ -70,21 +101,24 @@ class PrivacyProtect: NSObject {
   }
   
   @objc func appDidBecomeActive() {
-    if let blurView = PrivacyProtect.blurView {
+    // Image kaldır
+    if let iv = PrivacyProtect.imageView {
+      iv.removeFromSuperview()
+      PrivacyProtect.imageView = nil
+    }
+    
+    // Blur kaldır
+    if let bv = PrivacyProtect.blurView {
       if (PrivacyProtect.config["animated"] as? Bool) == true {
-        UIView.animate(
-          withDuration: Double(PrivacyProtect.config["animationDuration"] as! Int)/1000.0,
-          animations: {
-            blurView.alpha = 0
-          },
-          completion: { _ in
-            blurView.removeFromSuperview()
-            PrivacyProtect.blurView = nil
-            PrivacyProtect.overlayView = nil
-          }
-        )
+        UIView.animate(withDuration: Double(PrivacyProtect.config["animationDuration"] as! Int)/1000.0,
+                       animations: { bv.alpha = 0 },
+                       completion: { _ in
+          bv.removeFromSuperview()
+          PrivacyProtect.blurView = nil
+          PrivacyProtect.overlayView = nil
+        })
       } else {
-        blurView.removeFromSuperview()
+        bv.removeFromSuperview()
         PrivacyProtect.blurView = nil
         PrivacyProtect.overlayView = nil
       }
@@ -92,18 +126,12 @@ class PrivacyProtect: NSObject {
   }
 }
 
-
 extension UIColor {
   convenience init?(hex: String) {
     var cleaned = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-    
-    if cleaned.hasPrefix("#") {
-      cleaned.remove(at: cleaned.startIndex)
-    }
-    
+    if cleaned.hasPrefix("#") { cleaned.remove(at: cleaned.startIndex) }
     var rgb: UInt64 = 0
     guard Scanner(string: cleaned).scanHexInt64(&rgb) else { return nil }
-    
     if cleaned.count == 6 {
       self.init(
         red: CGFloat((rgb & 0xFF0000) >> 16) / 255.0,
@@ -118,8 +146,6 @@ extension UIColor {
         blue: CGFloat((rgb & 0x0000FF00) >> 8) / 255.0,
         alpha: CGFloat(rgb & 0x000000FF) / 255.0
       )
-    } else {
-      return nil
-    }
+    } else { return nil }
   }
 }

@@ -1,135 +1,192 @@
 package com.privacyprotect
 
 import android.app.Activity
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.net.Uri
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.ReadableMap
+import android.animation.ValueAnimator
+import com.facebook.react.bridge.*
+import android.graphics.Color
+import com.facebook.drawee.view.SimpleDraweeView
+import com.facebook.react.module.annotations.ReactModule
+import com.facebook.react.bridge.ReadableType
 
+
+@ReactModule(name = PrivacyProtectModule.NAME)
 class PrivacyProtectModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
+  ReactContextBaseJavaModule(reactContext) {
 
-    companion object {
-        const val NAME = "PrivacyProtect"
-    }
+  override fun getName(): String = "PrivacyProtect"
 
-    private var overlayView: View? = null
-    private var overlayColor: Int = 0x80000000.toInt() // default yarı saydam siyah
-    private var animated: Boolean = true
-    private var animationDuration: Int = 300
-    private var secureFlag: Boolean = false
-    private var imageUri: String? = null
+  companion object {
+    const val NAME = "PrivacyProtect"
+    private var dimView: View? = null
+    private var imageView: SimpleDraweeView? = null
+    private var blurAnimator: ValueAnimator? = null
 
-    override fun getName() = NAME
+    // === CONFIG vars (JS'den değiştirilebilir) ===
+    private var blurRadius = 20f
+    private var animated = true
+    private var animationDurationMs = 220L
+    private var overlayColor: Int = Color.parseColor("#99000000")
+    private var backgroundImage: String? = null
 
-    /**
-     * Configure privacy protect options from JS
-     */
-    @ReactMethod
-    fun configure(options: ReadableMap) {
-        if (options.hasKey("overlayColor")) {
-            overlayColor = try {
-                Color.parseColor(options.getString("overlayColor"))
-            } catch (e: Exception) {
-                0x80000000.toInt()
-            }
-        }
-        if (options.hasKey("animated")) {
-            animated = options.getBoolean("animated")
-        }
-        if (options.hasKey("animationDuration")) {
-            animationDuration = options.getInt("animationDuration")
-        }
-        if (options.hasKey("secureFlag")) {
-            secureFlag = options.getBoolean("secureFlag")
-        }
-        if (options.hasKey("image")) {
-            imageUri = options.getString("image")
-        }
-    }
 
-    /**
-     * Add overlay or image when app goes to background
-     */
-    fun addPrivacyView(activity: Activity) {
-        val decorView = activity.window.decorView as FrameLayout
 
-        // FLAG_SECURE → Screenshot engelle + App Switcher’da siyah ekran
-        if (secureFlag) {
-            activity.window.setFlags(
-                android.view.WindowManager.LayoutParams.FLAG_SECURE,
-                android.view.WindowManager.LayoutParams.FLAG_SECURE
+    fun applyPrivacyCover(activity: Activity) {
+      val win = activity.window ?: return
+      val decor = win.decorView as? FrameLayout ?: return
+
+      if (!backgroundImage.isNullOrEmpty()) {
+        if (imageView == null) {
+          imageView = SimpleDraweeView(activity).apply {
+            layoutParams = FrameLayout.LayoutParams(
+              FrameLayout.LayoutParams.MATCH_PARENT,
+              FrameLayout.LayoutParams.MATCH_PARENT
             )
-            return
+            hierarchy?.setActualImageScaleType(
+              com.facebook.drawee.drawable.ScalingUtils.ScaleType.CENTER_CROP
+            )
+            setImageURI(backgroundImage)
+            elevation = 9999f
+          }
+        }
+        if (imageView?.parent == null) {
+          decor.addView(imageView)
+          decor.bringChildToFront(imageView)
+        }
+        return
+      }
+
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        // Blur
+        if (animated) {
+          blurAnimator?.cancel()
+          blurAnimator = ValueAnimator.ofFloat(0f, blurRadius).apply {
+            duration = animationDurationMs
+            addUpdateListener { a ->
+              val r = a.animatedValue as Float
+              decor.setRenderEffect(
+                RenderEffect.createBlurEffect(r, r, Shader.TileMode.CLAMP)
+              )
+            }
+            start()
+          }
+        } else {
+          decor.setRenderEffect(
+            RenderEffect.createBlurEffect(blurRadius, blurRadius, Shader.TileMode.CLAMP)
+          )
         }
 
-        if (overlayView == null) {
-            overlayView = if (imageUri != null) {
-                val imageView = ImageView(activity)
-                try {
-                    val inputStream = activity.contentResolver.openInputStream(Uri.parse(imageUri))
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    imageView.setImageBitmap(bitmap)
-                    imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
-                } catch (_: Exception) { }
-                imageView.layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT
-                )
-                imageView
-            } else {
-                View(activity).apply {
-                    setBackgroundColor(overlayColor)
-                    layoutParams = FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT
-                    )
-                }
-            }
+        // Overlay (blur üstüne şeffaf renk)
+        if (dimView == null) {
+          dimView = View(activity).apply {
+            setBackgroundColor(overlayColor) // JS’ten gelen int (processColor)
+            layoutParams = FrameLayout.LayoutParams(
+              FrameLayout.LayoutParams.MATCH_PARENT,
+              FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            elevation = 9999f
+          }
         }
-
-        if (overlayView?.parent == null) {
-            overlayView?.alpha = 0f
-            decorView.addView(overlayView)
-            if (animated) {
-                overlayView?.animate()
-                    ?.alpha(1f)
-                    ?.setDuration(animationDuration.toLong())
-                    ?.start()
-            } else {
-                overlayView?.alpha = 1f
-            }
+        if (dimView?.parent == null) {
+          decor.addView(dimView)
+          decor.bringChildToFront(dimView)
         }
+      } else {
+        // Android < 12: sadece overlay
+        if (dimView == null) {
+          dimView = View(activity).apply {
+            setBackgroundColor(overlayColor)
+            layoutParams = FrameLayout.LayoutParams(
+              FrameLayout.LayoutParams.MATCH_PARENT,
+              FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            elevation = 9999f
+          }
+        }
+        if (dimView?.parent == null) {
+          decor.addView(dimView)
+          decor.bringChildToFront(dimView)
+        }
+      }
     }
 
-    /**
-     * Remove overlay or image when app comes back to foreground
-     */
-    fun removePrivacyView(activity: Activity) {
-        val decorView = activity.window.decorView as FrameLayout
-        overlayView?.let {
-            if (animated) {
-                it.animate()
-                    .alpha(0f)
-                    .setDuration(animationDuration.toLong())
-                    .withEndAction {
-                        decorView.removeView(it)
-                        overlayView = null
-                    }
-                    .start()
-            } else {
-                decorView.removeView(it)
-                overlayView = null
-            }
-        }
-        if (secureFlag) {
-            activity.window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE)
-        }
+    fun removePrivacyCover(activity: Activity) {
+      val win = activity.window ?: return
+      val decor = win.decorView as? FrameLayout ?: return
+
+      // Blur sıfırla
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        blurAnimator?.cancel()
+        blurAnimator = null
+        decor.setRenderEffect(null)
+      }
+
+      // Overlay kaldır
+      dimView?.let { v ->
+        (v.parent as? FrameLayout)?.removeView(v)
+        dimView = null
+      }
+
+      // Image kaldır
+      imageView?.let { v ->
+        (v.parent as? FrameLayout)?.removeView(v)
+        imageView = null
+      }
     }
+
+    // === JS configure çağrısı için set edilebilir ===
+    fun updateConfig(options: ReadableMap) {
+      if (options.hasKey("overlayColor") && !options.isNull("overlayColor")) {
+        val value = options.getDynamic("overlayColor")
+        when (value.type) {
+          ReadableType.Number -> {
+            // processColor() int döner
+            overlayColor = value.asInt()
+          }
+          ReadableType.String -> {
+            try {
+              overlayColor = Color.parseColor(value.asString())
+            } catch (_: Exception) {
+              overlayColor = Color.parseColor("#99000000") // fallback
+            }
+          }
+          else -> {
+            overlayColor = Color.parseColor("#99000000")
+          }
+        }
+      }
+      if (options.hasKey("animated")) {
+        animated = options.getBoolean("animated")
+      }
+      if (options.hasKey("animationDuration")) {
+        animationDurationMs = options.getInt("animationDuration").toLong()
+      }
+      if (options.hasKey("backgroundImage") && !options.isNull("backgroundImage")) {
+        val value = options.getDynamic("backgroundImage")
+        when (value.type) {
+          ReadableType.String -> {
+            backgroundImage = value.asString()
+          }
+          ReadableType.Number -> {
+            // local resource id (örn: R.drawable.bg)
+            val resId = value.asInt()
+            backgroundImage = "res://${resId}" // Fresco local resource scheme
+          }
+          else -> {
+            backgroundImage = null
+          }
+        }
+      }
+    }
+  }
+
+
+  @ReactMethod
+  fun configure(options: ReadableMap) {
+    updateConfig(options)
+  }
 }
