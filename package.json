@@ -1,6 +1,6 @@
 {
   "name": "@engin/react-native-privacy-protect",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A cross-platform React Native library to protect sensitive app content when the app goes to the background or appears in the app switcher. Provides a blur (iOS) or secure overlay (Android) to hide UI content automatically.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
