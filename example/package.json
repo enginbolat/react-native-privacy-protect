@@ -1,7 +1,9 @@
 {
-  "name": "react-native-privacy-protect-example",
-  "version": "0.0.1",
-  "private": true,
+  "name": "@enginnblt/react-native-privacy-protect-example",
+  "version": "0.1.2",
+  "description": "Example React Native app demonstrating the usage of @enginnblt/react-native-privacy-protect library",
+  "main": "index.js",
+  "private": false,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -32,5 +34,24 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "keywords": [
+    "react-native",
+    "privacy",
+    "security",
+    "example",
+    "demo",
+    "background-protection"
+  ],
+  "author": "Engin Bolat <engi.bolat@gmail.com> (https://github.com/enginbolat)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enginbolat/react-native-privacy-protect.git",
+    "directory": "example"
+  },
+  "bugs": {
+    "url": "https://github.com/enginbolat/react-native-privacy-protect/issues"
+  },
+  "homepage": "https://github.com/enginbolat/react-native-privacy-protect#readme"
 }
