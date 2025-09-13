@@ -1,6 +1,6 @@
+import PrivacyProtect from '@enginnblt/react-native-privacy-protect';
 import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PrivacyProtect from '@engin/react-native-privacy-protect';
 
 export default function App() {
   useEffect(() => {

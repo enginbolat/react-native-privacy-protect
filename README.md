@@ -14,7 +14,7 @@ A cross-platform React Native library to protect sensitive app content when the 
 ## Installation
 
 ```sh
-npm install @engin/react-native-privacy-protect
+npm install react-native-privacy-protect
 ```
 
 ### React Native CLI Setup
@@ -35,7 +35,7 @@ For Expo projects using development builds (not Expo Go):
 
 1. Install the library:
 ```sh
-npx expo install @engin/react-native-privacy-protect
+npx expo install react-native-privacy-protect
 ```
 
 2. Add the config plugin to your `app.config.js` or `app.json`:
@@ -46,7 +46,7 @@ export default {
   expo: {
     name: 'your-app',
     plugins: [
-      '@engin/react-native-privacy-protect'
+      'react-native-privacy-protect'
     ],
   },
 };
@@ -58,7 +58,7 @@ export default {
   "expo": {
     "name": "your-app",
     "plugins": [
-      "@engin/react-native-privacy-protect"
+      "react-native-privacy-protect"
     ]
   }
 }
@@ -82,7 +82,7 @@ See the `example/` directory for a React Native CLI example.
 ### Basic Usage with Auto-Enable
 
 ```js
-import { configurePrivacyProtect } from '@engin/react-native-privacy-protect';
+import { configurePrivacyProtect } from 'react-native-privacy-protect';
 
 // Configure once in your App.tsx
 useEffect(() => {
@@ -100,7 +100,7 @@ useEffect(() => {
 ### Manual Control
 
 ```js
-import { configurePrivacyProtect } from '@engin/react-native-privacy-protect';
+import { configurePrivacyProtect } from 'react-native-privacy-protect';
 
 // Configure without auto-enable
 configurePrivacyProtect({
