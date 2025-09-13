@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PrivacyProtect from 'react-native-privacy-protect';
+import PrivacyProtect from '@engin/react-native-privacy-protect';
 
 export default function App() {
   useEffect(() => {
@@ -10,7 +10,7 @@ export default function App() {
       animated: true,
       animationDuration: 250,
       secureFlag: false,
-      backgroundImage: require('./assets/Tunnell_opener.png'),
+      backgroundImage: require('./assets/arches.jpg'),
     });
   }, []);
 

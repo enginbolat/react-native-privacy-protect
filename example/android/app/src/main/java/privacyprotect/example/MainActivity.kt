@@ -1,4 +1,5 @@
 package privacyprotect.example
+import expo.modules.ReactActivityDelegateWrapper
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
@@ -19,5 +20,5 @@ class MainActivity : ReactActivity() {
   override fun getMainComponentName(): String = "PrivacyProtectExample"
 
   override fun createReactActivityDelegate(): ReactActivityDelegate =
-    DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+    ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled))
 }

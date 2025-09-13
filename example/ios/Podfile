@@ -1,3 +1,4 @@
+ENV['NODE_BINARY'] = `which node`.strip
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 
 ENV['RCT_NEW_ARCH_ENABLED'] = '0'
