@@ -79,7 +79,7 @@ The example demonstrates various configuration options:
 ## Requirements
 
 - React Native 0.81+
-- iOS 11.0+ / Android API 21+
+- iOS 15.0+ / Android API 21+
 - Node.js 20+
 
 ## License
