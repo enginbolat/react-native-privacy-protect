@@ -14,7 +14,7 @@ A cross-platform React Native library to protect sensitive app content when the 
 ## Installation
 
 ```sh
-npm install react-native-privacy-protect
+npm install @enginnblt/react-native-privacy-protect
 ```
 
 ### React Native CLI Setup
@@ -29,48 +29,6 @@ cd ios && pod install
 
 No additional setup required for Android.
 
-### Expo Setup
-
-For Expo projects using development builds (not Expo Go):
-
-1. Install the library:
-```sh
-npx expo install react-native-privacy-protect
-```
-
-2. Add the config plugin to your `app.config.js` or `app.json`:
-
-**app.config.js**:
-```js
-export default {
-  expo: {
-    name: 'your-app',
-    plugins: [
-      'react-native-privacy-protect'
-    ],
-  },
-};
-```
-
-**app.json**:
-```json
-{
-  "expo": {
-    "name": "your-app",
-    "plugins": [
-      "react-native-privacy-protect"
-    ]
-  }
-}
-```
-
-3. Create a new development build:
-```sh
-npx expo prebuild
-npx expo run:ios # or npx expo run:android
-```
-
-**Note**: This library requires native code and cannot be used with Expo Go. You need to use a development build or bare workflow.
 
 ## Examples
 
@@ -82,11 +40,11 @@ See the `example/` directory for a React Native CLI example.
 ### Basic Usage with Auto-Enable
 
 ```js
-import { configurePrivacyProtect } from 'react-native-privacy-protect';
+import PrivacyProtect from '@enginnblt/react-native-privacy-protect';
 
 // Configure once in your App.tsx
 useEffect(() => {
-  configurePrivacyProtect({
+  PrivacyProtect.configurePrivacyProtect({
     autoEnable: true, // Automatically show privacy overlay when app goes to background
     blurRadius: 20, // Android 12+ blur effect
     blurStyle: 'dark', // iOS blur style
@@ -100,10 +58,10 @@ useEffect(() => {
 ### Manual Control
 
 ```js
-import { configurePrivacyProtect } from 'react-native-privacy-protect';
+import PrivacyProtect from '@enginnblt/react-native-privacy-protect';
 
 // Configure without auto-enable
-configurePrivacyProtect({
+PrivacyProtect.configurePrivacyProtect({
   autoEnable: false,
   blurRadius: 15,
   overlayColor: '#00000080',
@@ -116,7 +74,7 @@ configurePrivacyProtect({
 ### Custom Background Image
 
 ```js
-configurePrivacyProtect({
+PrivacyProtect.configurePrivacyProtect({
   backgroundImage: require('./assets/privacy-overlay.png'), // Local image
   overlayColor: '#00000040', // Light overlay on top of image
   animated: true,
@@ -126,7 +84,7 @@ configurePrivacyProtect({
 ### Remote Image
 
 ```js
-configurePrivacyProtect({
+PrivacyProtect.configurePrivacyProtect({
   backgroundImage: { uri: 'https://example.com/privacy-image.jpg' }, // Remote image
   overlayColor: '#00000060',
   animated: true,
@@ -138,7 +96,7 @@ configurePrivacyProtect({
 ```js
 // Switch between different privacy modes
 const switchToBlurMode = () => {
-  configurePrivacyProtect({
+  PrivacyProtect.configurePrivacyProtect({
     blurStyle: 'dark',
     overlayColor: '#00000080',
     animated: true,
@@ -146,7 +104,7 @@ const switchToBlurMode = () => {
 };
 
 const switchToImageMode = () => {
-  configurePrivacyProtect({
+  PrivacyProtect.configurePrivacyProtect({
     backgroundImage: require('./assets/custom-bg.png'),
     overlayColor: '#00000040',
     animated: true,

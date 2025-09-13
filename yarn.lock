@@ -1732,9 +1732,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@enginnblt/react-native-privacy-protect@link:..::locator=react-native-privacy-protect-example%40workspace%3Aexample":
+"@enginnblt/react-native-privacy-protect-example@workspace:example":
   version: 0.0.0-use.local
-  resolution: "@enginnblt/react-native-privacy-protect@link:..::locator=react-native-privacy-protect-example%40workspace%3Aexample"
+  resolution: "@enginnblt/react-native-privacy-protect-example@workspace:example"
+  dependencies:
+    "@babel/core": ^7.25.2
+    "@babel/preset-env": ^7.25.3
+    "@babel/runtime": ^7.25.0
+    "@enginnblt/react-native-privacy-protect": "link:.."
+    "@react-native-community/cli": ^20.0.2
+    "@react-native-community/cli-platform-android": 20.0.0
+    "@react-native-community/cli-platform-ios": ^20.0.2
+    "@react-native/babel-preset": 0.81.1
+    "@react-native/metro-config": 0.81.1
+    "@react-native/new-app-screen": 0.81.1
+    "@react-native/typescript-config": 0.81.1
+    "@types/react": ^19.1.0
+    react: 19.1.0
+    react-native: 0.81.1
+    react-native-builder-bob: ^0.40.13
+    react-native-monorepo-config: ^0.1.9
+    react-native-safe-area-context: ^5.5.2
+  languageName: unknown
+  linkType: soft
+
+"@enginnblt/react-native-privacy-protect@link:..::locator=%40enginnblt%2Freact-native-privacy-protect-example%40workspace%3Aexample":
+  version: 0.0.0-use.local
+  resolution: "@enginnblt/react-native-privacy-protect@link:..::locator=%40enginnblt%2Freact-native-privacy-protect-example%40workspace%3Aexample"
   languageName: node
   linkType: soft
 
@@ -10218,30 +10242,6 @@ __metadata:
   checksum: 9b1c6fefb4d67e4a9f3f11554d33072c2112f56d578b8e9b68becc3457383e4f487f31af00d9e85cd43f0b23996c1b22e10cbec57e80c3fb2e4557a0e3db176d
   languageName: node
   linkType: hard
-
-"react-native-privacy-protect-example@workspace:example":
-  version: 0.0.0-use.local
-  resolution: "react-native-privacy-protect-example@workspace:example"
-  dependencies:
-    "@babel/core": ^7.25.2
-    "@babel/preset-env": ^7.25.3
-    "@babel/runtime": ^7.25.0
-    "@enginnblt/react-native-privacy-protect": "link:.."
-    "@react-native-community/cli": ^20.0.2
-    "@react-native-community/cli-platform-android": 20.0.0
-    "@react-native-community/cli-platform-ios": ^20.0.2
-    "@react-native/babel-preset": 0.81.1
-    "@react-native/metro-config": 0.81.1
-    "@react-native/new-app-screen": 0.81.1
-    "@react-native/typescript-config": 0.81.1
-    "@types/react": ^19.1.0
-    react: 19.1.0
-    react-native: 0.81.1
-    react-native-builder-bob: ^0.40.13
-    react-native-monorepo-config: ^0.1.9
-    react-native-safe-area-context: ^5.5.2
-  languageName: unknown
-  linkType: soft
 
 "react-native-safe-area-context@npm:^5.5.2":
   version: 5.6.1
