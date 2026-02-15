@@ -33,12 +33,10 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "bun run start --cwd ../example",
     "test": "jest",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib android/build",
-    "build": "bob build",
     "prepare": "bob build",
     "release": "release-it --only-version"
   },
