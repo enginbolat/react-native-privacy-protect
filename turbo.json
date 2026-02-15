@@ -1,0 +1,40 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["bun.lock"],
+  "globalEnv": ["NODE_ENV"],
+  "tasks": {
+    "build": {
+      "outputs": ["lib/**"],
+      "inputs": ["src/**", "package.json", "tsconfig*.json", "android/**", "ios/**", "*.podspec"],
+      "dependsOn": []
+    },
+    "build:android": {
+      "env": ["ANDROID_HOME", "ORG_GRADLE_PROJECT_newArchEnabled"],
+      "inputs": ["package.json", "android/**", "!android/.gradle/**", "!android/build/**", "!android/app/build/**", "app/**"],
+      "outputs": [],
+      "dependsOn": ["^build"]
+    },
+    "build:ios": {
+      "env": ["RCT_NEW_ARCH_ENABLED", "RCT_USE_RN_DEP", "RCT_USE_PREBUILT_RNCORE"],
+      "inputs": ["package.json", "*.podspec", "ios/**", "!ios/build/**", "!ios/Pods/**", "*.xcworkspace/**"],
+      "outputs": [],
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "inputs": ["src/**", "package.json", "tsconfig*.json"],
+      "outputs": []
+    },
+    "lint": {
+      "inputs": ["src/**", "package.json", "*.config.js", "*.config.mjs"],
+      "outputs": []
+    },
+    "test": {
+      "inputs": ["src/**", "package.json", "jest.config.*", "**/__tests__/**"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false,
+      "outputs": []
+    }
+  }
+}

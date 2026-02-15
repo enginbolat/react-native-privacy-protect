@@ -33,11 +33,12 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-privacy-protect-example",
+    "example": "bun run start --cwd ../example",
     "test": "jest",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "clean": "del-cli lib android/build",
+    "build": "bob build",
     "prepare": "bob build",
     "release": "release-it --only-version"
   },
@@ -82,24 +83,15 @@
     "react-native": "0.81.1",
     "react-native-builder-bob": "^0.40.13",
     "release-it": "^19.0.4",
-    "turbo": "^2.5.6",
     "typescript": "^5.9.2"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
-  "workspaces": [
-    "example",
-    "@engin/react-native-privacy"
-  ],
-  "packageManager": "yarn@3.6.1",
   "jest": {
     "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
+    "modulePathIgnorePatterns": ["<rootDir>/lib/"]
   },
   "commitlint": {
     "extends": [
@@ -162,11 +154,5 @@
     "languages": "kotlin-objc",
     "type": "turbo-module",
     "version": "0.54.2"
-  },
-  "resolutions": {
-    "@react-native-community/cli": "13.6.6"
-  },
-  "installConfig": {
-    "hoistingLimits": "workspaces"
   }
 }
