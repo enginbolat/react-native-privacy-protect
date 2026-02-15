@@ -1,0 +1,3 @@
+#!/bin/sh
+# CI ile aynı kontroller: commit atmadan önce lint + typecheck + test
+bun run lint && bun run typecheck && bun run test

@@ -7,7 +7,6 @@ export interface Spec extends TurboModule {
     overlayColor?: number;
     animated?: boolean;
     animationDuration?: number;
-    secureFlag?: boolean;
     backgroundImage?: string;
   }): void;
 }

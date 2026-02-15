@@ -11,7 +11,6 @@ export type PrivacyProtectOptions = {
   overlayColor?: string | number | null;
   animated?: boolean;
   animationDuration?: number;
-  secureFlag?: boolean;
   backgroundImage?: ImageSourcePropType;
 };
 
@@ -32,7 +31,6 @@ export function configurePrivacyProtect(options: PrivacyProtectOptions = {}) {
     overlayColor,
     animated: options.animated ?? true,
     animationDuration: options.animationDuration ?? 300,
-    secureFlag: options.secureFlag ?? false,
     backgroundImage,
   };
 

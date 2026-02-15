@@ -51,3 +51,5 @@ example/ios/**/xcuserdata/
 # Example app - other
 example/.yarn
 example/vendor
+
+CLAUDE.md

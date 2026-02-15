@@ -141,22 +141,6 @@ PrivacyProtect.configurePrivacyProtect({
 - Supports both local assets and remote URLs
 - Overlay color is applied on top of the image
 
-### Security Options
-
-Enable FLAG_SECURE for maximum security:
-
-```javascript
-PrivacyProtect.configurePrivacyProtect({
-  secureFlag: true, // Blocks screenshots and prevents content in app switcher
-});
-```
-
-**FLAG_SECURE Behavior:**
-- Prevents screenshots and screen recordings
-- Hides app content in the recent apps switcher
-- Shows a blank screen instead of app content
-- Useful for banking, payment, or highly sensitive apps
-
 ## Advanced Configuration
 
 ### Dynamic Configuration
@@ -182,13 +166,6 @@ const enableImageMode = () => {
   });
 };
 
-// Switch to secure mode
-const enableSecureMode = () => {
-  PrivacyProtect.configurePrivacyProtect({
-    secureFlag: true,
-    overlayColor: '#00000000', // No overlay needed with FLAG_SECURE
-  });
-};
 ```
 
 ### Performance Optimization
@@ -245,11 +222,6 @@ PrivacyProtect.configurePrivacyProtect({
 - Reduce `blurRadius` value if experiencing lag
 - Disable animations by setting `animated: false`
 - Use smaller image files for background images
-
-**FLAG_SECURE not working:**
-- Test on physical device (not emulator)
-- Some devices may have additional security settings
-- Ensure flag is set before activity becomes visible
 
 ### Integration Mistakes
 
@@ -325,11 +297,6 @@ PrivacyProtect.configurePrivacyProtect({
    - Test focus loss/gain
    - Verify image is displayed correctly
 
-5. **FLAG_SECURE Test:**
-   - Set `secureFlag: true`
-   - Take a screenshot (should fail)
-   - Open recent apps (should show blank screen)
-
 ### Automated Testing
 
 ```javascript
@@ -355,8 +322,7 @@ describe('PrivacyProtect Android Integration', () => {
 4. **Use appropriate blur radius** for your target devices
 5. **Consider performance implications** of animations and blur effects
 6. **Test with different Android versions** (especially Android 12+ for blur)
-7. **Use FLAG_SECURE** for highly sensitive applications
-8. **Optimize image sizes** for background images
+7. **Optimize image sizes** for background images
 
 ## Migration from Other Libraries
 

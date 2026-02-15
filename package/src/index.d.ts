@@ -26,13 +26,6 @@ declare module 'react-native-privacy-protect' {
     animationDuration?: number;
 
     /**
-     * Android only: If true, uses FLAG_SECURE to block screenshots
-     * and show a black screen in the app switcher instead of blur.
-     * Default: false
-     */
-    secureFlag?: boolean;
-
-    /**
      * Android only: Blur radius for the privacy overlay.
      * Only works on Android 12+ (API 31+).
      * Default: 0 (no blur)

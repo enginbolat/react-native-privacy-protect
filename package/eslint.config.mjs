@@ -1,27 +1,22 @@
-import { fixupConfigRules } from '@eslint/compat';
-import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import prettier from 'eslint-plugin-prettier';
+import tseslint from 'typescript-eslint';
 import { defineConfig } from 'eslint/config';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
 
 export default defineConfig([
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
-    extends: fixupConfigRules(compat.extends('@react-native', 'prettier')),
+    files: ['**/*.{js,ts,tsx}'],
     plugins: { prettier },
     rules: {
-      'react/react-in-jsx-scope': 'off',
       'prettier/prettier': 'error',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
+  },
+  {
+    files: ['**/*.js'],
+    languageOptions: { globals: { module: 'readonly', require: 'readonly', __dirname: 'readonly', __filename: 'readonly' } },
   },
   {
     ignores: ['node_modules/', 'lib/'],

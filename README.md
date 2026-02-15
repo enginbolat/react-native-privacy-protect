@@ -50,6 +50,16 @@ Example oluşturulduktan sonra:
 - Root’tan: `bun run build:android` veya `bun run build:ios`
 - Sadece example’da script çalıştırmak: `bun run start --filter example` (example’da `start` script’i tanımlı olmalı)
 
+## Pre-commit (Husky)
+
+`bun install` sonrası Husky otomatik kurulur. Commit atmadan önce CI ile aynı kontroller çalışır:
+
+- `bun run lint`
+- `bun run typecheck`
+- `bun run test`
+
+Bunlardan biri hata verirse commit tamamlanmaz. Atlamak için: `git commit --no-verify` (önerilmez).
+
 ## Tek workspace’te çalıştırmak
 
 ```bash

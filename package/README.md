@@ -8,7 +8,6 @@ A cross-platform React Native library to protect sensitive app content when the 
 - **Cross-Platform**: Works on both iOS and Android
 - **Customizable Overlays**: Support for custom images, blur effects, and overlay colors
 - **Smooth Animations**: Configurable fade in/out animations
-- **Security Options**: Android FLAG_SECURE support to block screenshots and app switcher
 - **TypeScript Support**: Full TypeScript definitions included
 
 ## Installation
@@ -146,20 +145,6 @@ PrivacyProtect.configurePrivacyProtect({
 - Images are automatically scaled to cover the entire screen
 - Overlay color is applied on top of the image for additional privacy
 
-### Security Options
-
-```javascript
-PrivacyProtect.configurePrivacyProtect({
-  secureFlag: true, // Blocks screenshots and prevents content in app switcher
-});
-```
-
-**FLAG_SECURE Behavior:**
-- Prevents screenshots and screen recordings
-- Hides app content in the recent apps switcher
-- Shows a blank screen instead of app content
-- Useful for banking, payment, or highly sensitive apps
-
 ### Performance Considerations
 
 **Memory Management:**
@@ -270,7 +255,6 @@ Configure the privacy protection behavior.
 | `overlayColor` | `string` | Both | `'#80000000'` | Overlay color (hex format) |
 | `animated` | `boolean` | Both | `true` | Enable fade animations |
 | `animationDuration` | `number` | Both | `300` | Animation duration in milliseconds |
-| `secureFlag` | `boolean` | Android | `false` | Use FLAG_SECURE to block screenshots |
 | `backgroundImage` | `ImageSourcePropType` | Both | - | Custom image for privacy overlay (local or remote) |
 
 ## Troubleshooting
@@ -297,11 +281,6 @@ Configure the privacy protection behavior.
 - Reduce `blurRadius` value if experiencing lag
 - Disable animations by setting `animated: false`
 - Use smaller image files for background images
-
-**FLAG_SECURE not working:**
-- Ensure you're testing on a physical device (not emulator)
-- Some devices may have additional security settings that override FLAG_SECURE
-- Check that the flag is set before the activity becomes visible
 
 ### Common Integration Mistakes
 

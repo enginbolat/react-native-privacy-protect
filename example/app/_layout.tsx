@@ -19,7 +19,6 @@ export default function RootLayout() {
       blurStyle: 'extraLight',
       animated: true,
       animationDuration: 0,
-      secureFlag: true,
       backgroundImage: require('../assets/images/arches.jpg'),
     });
   }, []);
