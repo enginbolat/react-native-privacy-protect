@@ -1,18 +1,18 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".",
+    "jsx": "react",
+    "strict": true,
     "paths": {
-      "@enginnblt/react-native-privacy-protect": ["../src/index"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
   "include": [
-    "src/**/*",
-    "index.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "android",
-    "ios"
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
   ]
 }
